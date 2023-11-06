@@ -3,7 +3,7 @@ package ua.nure.dbtable;
 import java.sql.SQLException;
 import java.util.Collection;
 
-import ua.nure.order.server.dao.DAOException;
+import ua.nure.location.server.dao.DAOException;
 
 public interface DBTable<T> {
 	/**

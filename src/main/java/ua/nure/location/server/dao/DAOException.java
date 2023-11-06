@@ -1,4 +1,4 @@
-package ua.nure.order.server.dao;
+package ua.nure.location.server.dao;
 
 @SuppressWarnings("serial")
 public class DAOException extends Exception {

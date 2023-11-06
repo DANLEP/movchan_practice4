@@ -1,13 +1,12 @@
 <?xml version="1.0"?>
 <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
-            targetNamespace="http://it.nure.ua/xml/entity/place/"
-            xmlns:tns="http://it.nure.ua/xml/entity/place/"
-            xmlns:ent="http://it.nure.ua/xml/entity/"
+            targetNamespace="http://location.nure.ua/entity"
+            xmlns:tns="http://location.nure.ua/entity"
             elementFormDefault="qualified">
 
 
     <!-- Import Entity -->
-    <xsd:import namespace="http://it.nure.ua/xml/entity/" schemaLocation="entity.xsd" />
+    <xsd:include schemaLocation="entity.xsd"/>
 
     <!-- Definition for Name -->
     <xsd:simpleType name="Name">
@@ -161,7 +160,7 @@
     <!-- Place Element Definition -->
     <xsd:complexType name="Place">
         <xsd:complexContent>
-            <xsd:extension base="ent:Entity">
+            <xsd:extension base="tns:Entity">
                 <xsd:sequence>
                     <xsd:element name="title" type="tns:Name"/>
                     <xsd:element name="description" type="tns:DescriptionType"/>

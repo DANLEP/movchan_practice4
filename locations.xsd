@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
-            targetNamespace="http://it.nure.ua/xml/entity/location/"
-            xmlns:tns="http://it.nure.ua/xml/entity/location/"
+            targetNamespace="http://location.nure.ua/entity"
+            xmlns:tns="http://location.nure.ua/entity"
             elementFormDefault="qualified">
     <xsd:include schemaLocation="location.xsd"/>
     <xsd:element name="locations">
