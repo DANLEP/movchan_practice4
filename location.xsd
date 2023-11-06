@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+            targetNamespace="http://it.nure.ua/xml/entity/location/"
+            xmlns:pl="http://it.nure.ua/xml/entity/place/"
+            xmlns:ent="http://it.nure.ua/xml/entity/"
+            elementFormDefault="qualified">
+
+    <!-- Importing Place and Entity  -->
+    <xsd:import namespace="http://it.nure.ua/xml/entity/place/" schemaLocation="place.xsd"/>
+    <xsd:import namespace="http://it.nure.ua/xml/entity/" schemaLocation="entity.xsd" />
+
+    <!-- Location Element Definition -->
+    <xsd:complexType name="Location">
+        <xsd:complexContent>
+            <xsd:extension base="ent:Entity">
+                <xsd:sequence>
+                    <xsd:element name="title" type="pl:Name" minOccurs="1" maxOccurs="1" />
+                    <xsd:element name="area" minOccurs="1" maxOccurs="1">
+                        <xsd:complexType>
+                            <xsd:sequence>
+                                <xsd:element name="coordinate" type="pl:CoordinateType" minOccurs="3" maxOccurs="unbounded" />
+                            </xsd:sequence>
+                        </xsd:complexType>
+                    </xsd:element>
+                    <xsd:element name="places" minOccurs="1" maxOccurs="1">
+                        <xsd:complexType>
+                            <xsd:sequence>
+                                <xsd:element name="place" type="pl:Place" minOccurs="1" maxOccurs="unbounded" />
+                            </xsd:sequence>
+                        </xsd:complexType>
+                    </xsd:element>
+                </xsd:sequence>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+</xsd:schema>
