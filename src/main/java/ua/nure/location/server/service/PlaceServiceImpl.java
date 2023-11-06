@@ -14,6 +14,7 @@ import java.util.Collection;
 
 @HandlerChain(file = "security_handler.xml")
 @WebService(serviceName="Places",
+        name = "Place",
         portName="PlacePort",
         endpointInterface="ua.nure.location.server.service.PlaceService",
         targetNamespace=Const.SERVICE_NS)

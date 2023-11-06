@@ -13,7 +13,7 @@ import java.util.Collection;
 @WebService(targetNamespace= Const.SERVICE_NS)
 public interface PlaceService {
 
-    @WebMethod()
+    @WebMethod(operationName = "getPlace", action = "urn:Place")
     @WebResult(targetNamespace="http://location.nure.ua/entity")
     public Place getPlace(
             @WebParam(name="id")
