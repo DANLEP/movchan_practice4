@@ -1,6 +1,7 @@
 package ua.nure.location.server;
 
 import jakarta.xml.ws.Endpoint;
+import jakarta.xml.ws.soap.SOAPBinding;
 import ua.nure.location.server.service.PlaceServiceImpl;
 
 import java.util.Scanner;
@@ -14,7 +15,8 @@ public class PlaceServer {
         System.setProperty("com.sun.xml.ws.transport.http.HttpAdapter.dump", "true");
         System.setProperty("com.sun.xml.internal.ws.transport.http.HttpAdapter.dump", "true");
 
-        Endpoint endpoint = Endpoint.publish(ADDRESS, implementor);
+        Endpoint endpoint = Endpoint.create(SOAPBinding.SOAP11HTTP_BINDING, implementor);
+        endpoint.publish(ADDRESS);
 
         System.out.println("Server ready... at " + ADDRESS);
 

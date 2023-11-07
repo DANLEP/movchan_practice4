@@ -67,7 +67,7 @@
       <loc:place id="4" isRecommended="false">
         <loc:title>Атом</loc:title>
         <loc:description>текстtexttex</loc:description>
-        <loc:type>Beach</loc:type>
+        <loc:type>Cultural</loc:type>
         <!--Optional:-->
         <loc:address>
           <loc:Street>Тест</loc:Street>
