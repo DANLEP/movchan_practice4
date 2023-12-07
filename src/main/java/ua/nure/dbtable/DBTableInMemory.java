@@ -35,13 +35,10 @@ class DBTableInMemory<T> implements DBTable<T> {
 		}
 		return ids;
 	}
-	
+
 	@Override
-	public T delete(int id) throws SQLException {
+	public T delete(int id){
 		T t = items.remove(id);
-		if (t == null) {
-			throw new SQLException("Not exist with id : " + id);
-		}
 		log.debug("Removed : {}",t);
 		return t;
 	}
@@ -58,17 +55,15 @@ class DBTableInMemory<T> implements DBTable<T> {
 	}
 
 	@Override
-	public boolean update(int id, T item) throws SQLException {
+	public boolean update(int id, T item) {
 		if (item == null) {
-			log.debug("Not found. Id : {}",id);
 			throw new NullPointerException("Item is null");
 		}
 		T o = items.get(id);
 		if (o == null) {
 			return false;
 		}
-		T res = items.put(id, item);
-		log.debug("Found. Updated : {}",res);
+		items.put(id, item);
 		return true;
 	}
 
@@ -91,11 +86,10 @@ class DBTableInMemory<T> implements DBTable<T> {
 	}
 
 	@Override
-	public T get(int id) throws SQLException {
+	public T get(int id){
 		T b = items.get(id);
 		if (b == null) {
 			log.debug("Not found : {}",id);
-			throw new SQLException("Not found id = " + id);
 		}
 		log.debug("Found : {}",id);
 		return b;

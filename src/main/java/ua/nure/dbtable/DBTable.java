@@ -22,7 +22,7 @@ public interface DBTable<T> {
 	 * @return
 	 * @throws SQLException 
 	 */
-	public T delete(int id) throws SQLException;
+	public T delete(int id);
 	
 	/**
 	 * Delete all instance of object from table 
@@ -40,7 +40,7 @@ public interface DBTable<T> {
 	 * @return
 	 * @throws SQLException 
 	 */
-	public boolean update(int id, T item) throws SQLException;
+	public boolean update(int id, T item);
 	
 	/**
 	 * Find object with patter in the table 
@@ -56,7 +56,7 @@ public interface DBTable<T> {
 	 */
 	public Collection<T> selectAll();
 
-	public T get(int id) throws SQLException;
+	public T get(int id);
 	
 	public void clear();
 	

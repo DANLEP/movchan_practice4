@@ -25,13 +25,7 @@ public class PlaceServiceImpl implements PlaceService {
     private static PlaceDAO placeDAO;
 
     static {
-        try {
-            placeDAO = PlaceDAOInMemoryImpl.instance();
-        } catch (JAXBException e) {
-            throw new RuntimeException(e);
-        } catch (SAXException e) {
-            throw new RuntimeException(e);
-        }
+        placeDAO = PlaceDAOInMemoryImpl.instance();
     }
 
     @Override

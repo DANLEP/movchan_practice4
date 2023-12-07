@@ -50,9 +50,7 @@ public class JAXBParser {
             });
         }
 
-        // do unmarshal
-        Locations locations = (Locations) unmarshaller.unmarshal(new File(xmlFileName));
-        return locations; // <-- filled container
+        return (Locations) unmarshaller.unmarshal(new File(xmlFileName)); // <-- filled container
     }
 
     public static void saveLocations(Locations locations, final String xmlFileName,

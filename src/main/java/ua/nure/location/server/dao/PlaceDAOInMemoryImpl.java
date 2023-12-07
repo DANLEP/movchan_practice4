@@ -7,6 +7,7 @@ import ua.nure.dbtable.DBTableFactory;
 import ua.nure.dbtable.Filter;
 import ua.nure.location.entity.Location;
 import ua.nure.location.entity.Place;
+import ua.nure.location.rest.exceptions.ValidationException;
 import ua.nure.location.server.parser.Const;
 import ua.nure.location.server.parser.JAXBParser;
 
@@ -20,11 +21,11 @@ public class PlaceDAOInMemoryImpl implements PlaceDAO {
 
     private static PlaceDAOInMemoryImpl instance;
 
-    private PlaceDAOInMemoryImpl() throws JAXBException, SAXException {
+    private PlaceDAOInMemoryImpl() {
         initPlaces();
     }
 
-    public static synchronized PlaceDAOInMemoryImpl instance() throws JAXBException, SAXException {
+    public static synchronized PlaceDAOInMemoryImpl instance() {
         if (instance == null) {
             instance = new PlaceDAOInMemoryImpl();
         }
@@ -32,42 +33,32 @@ public class PlaceDAOInMemoryImpl implements PlaceDAO {
     }
 
     @Override
-    public int addPlace(Place item) {
+    public int addPlace(Place item) throws ValidationException {
+        if (item == null) {
+            throw new ValidationException("create: item is required");
+        }
         int id = places.insert(item);
         item.setId(id);
-        try {
-            places.update(id, item);
-        } catch (SQLException e) {
-            // do nothing, always exist
-        }
+        places.update(id, item);
         return id;
     }
 
     @Override
-    public Place deletePlace(int id) throws DAOException {
-        try {
-            return places.delete(id);
-        } catch (SQLException e) {
-            throw new DAOException(e);
+    public Place deletePlace(Integer id) throws ValidationException {
+        if (id == null) {
+            throw new ValidationException("delete: id is required");
         }
+        return places.delete(id);
     }
 
     @Override
-    public boolean updatePlaceDescription(int id, String description) throws DAOException {
+    public boolean updatePlaceDescription(int id, String description) throws ValidationException {
         Place p;
-        try {
-            p = places.get(id);
-        } catch (SQLException e) {
-            throw new DAOException("ID isn't exists");
-        }
+        p = places.get(id);
         if (description.length() < 10 || description.length() > 100)
-            throw new DAOException("Description Length must be from 10 to 100 letters");
+            throw new ValidationException("Description Length must be from 10 to 100 letters");
         p.setDescription(description);
-        try {
-            return places.update(id, p);
-        } catch (SQLException e) {
-            throw new DAOException("Unsuccessful update");
-        }
+        return places.update(id, p);
     }
 
     Filter<Place> typeFilter = new Filter<>() {
@@ -79,7 +70,9 @@ public class PlaceDAOInMemoryImpl implements PlaceDAO {
     };
 
     @Override
-    public Collection<Place> findByActivityType(String pattern) {
+    public Collection<Place> findByActivityType(String pattern) throws ValidationException {
+        if (pattern.isBlank() || pattern.isEmpty())
+            throw new ValidationException("parameter error");
         return places.filter(pattern, typeFilter);
     }
 
@@ -89,25 +82,38 @@ public class PlaceDAOInMemoryImpl implements PlaceDAO {
     }
 
     @Override
-    public Place findById(Integer id) throws DAOException {
-        try {
-            return places.get(id);
-        } catch (SQLException e) {
-            throw new DAOException(e);
+    public Place findById(Integer id) throws ValidationException  {
+        if (id == null) {
+            throw new ValidationException("get: id is required");
         }
+        Place place = places.get(id);
+        if (place == null)
+            throw new ValidationException("no such place with this id");
+        return place;
     }
 
-    private void initPlaces() throws JAXBException, SAXException {
-        List<Location> locations1 =
-                JAXBParser.loadLocations(Const.XML_FILE, Const.XSD_FILE, Const.OBJECT_FACTORY)
-                .getLocation();
+    @Override
+    public Boolean updatePlace(Place place) throws ValidationException  {
+        if (place == null || place.getId() == null) {
+            throw new ValidationException("update: id is required");
+        }
+        return places.update(place.getId()
+                .intValue(), place);
+    }
 
+    private void initPlaces(){
+        try {
+            List<Location> locations1 = JAXBParser.loadLocations(Const.XML_FILE, Const.XSD_FILE, Const.OBJECT_FACTORY)
+            .getLocation();
 
-        for (int i = 0; i < locations1.size(); i++) {
-            List<Place> places1 = locations1.get(i).getPlaces().getPlace();
-            for (int y = 0; y < locations1.get(i).getPlaces().getPlace().size(); y++){
-                addPlace(places1.get(y));
+            for (int i = 0; i < locations1.size(); i++) {
+                List<Place> places1 = locations1.get(i).getPlaces().getPlace();
+                for (int y = 0; y < locations1.get(i).getPlaces().getPlace().size(); y++){
+                    addPlace(places1.get(y));
+                }
             }
+        } catch (JAXBException | SAXException e) {
+            throw new RuntimeException(e);
         }
     }
 }
